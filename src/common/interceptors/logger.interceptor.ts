@@ -3,7 +3,7 @@ import { Observable, tap } from "rxjs";
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
-    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    intercept(context: ExecutionContext, next: CallHandler): Observable<any> | Promise<Observable<any>>{
 
         const request = context.switchToHttp().getRequest();
         const method = request.method

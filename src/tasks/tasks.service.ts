@@ -24,6 +24,7 @@ export class TasksService {
       });
       return allTasks;
     } catch (error) {
+      console.error(error)
       throw new HttpException(
         'Erro ao listar as tarefas',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -52,9 +53,17 @@ export class TasksService {
         data: {
           name: createTaskDto.name,
           description: createTaskDto.description,
+          userId: createTaskDto.userId,
+          completed: false
         },
       });
-    } catch (error) {}
+      return newTask
+    } catch (error) {
+      throw new HttpException(
+        'Erro ao criar a tarefa',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async update(id: number, updateTaskDto: UpdateTaskDto) {
@@ -91,6 +100,7 @@ export class TasksService {
       await this.databaseService.task.delete({
         where: { id },
       });
+      return { message: 'Tarefa deletada com sucesso' };
     } catch (error) {
       throw new HttpException(
         'Erro ao deletar a tarefa',
